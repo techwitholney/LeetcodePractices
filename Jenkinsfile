@@ -1,30 +1,26 @@
 pipeline {
     agent any
-
+    tools {
+        maven 'Maven 3.8.1'
+        jdk 'jdk11'
+    }
     stages {
-        stage ('Compile Stage') {
-
+        stage ('Initialize') {
             steps {
-                withMaven(maven : 'Maven') {
-                    sh 'mvn clean compile'
-                }
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                '''
             }
         }
 
-        stage ('Testing Stage') {
-
+        stage ('Build') {
             steps {
-                withMaven(maven : 'Maven') {
-                    sh 'mvn test'
-                }
+                sh 'mvn -Dmaven.test.failure.ignore=true install'
             }
-        }
-
-
-        stage ('Deployment Stage') {
-            steps {
-                withMaven(maven : 'Maven') {
-                    sh 'mvn deploy'
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml'
                 }
             }
         }
