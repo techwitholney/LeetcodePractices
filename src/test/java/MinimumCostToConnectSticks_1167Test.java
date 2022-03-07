@@ -22,4 +22,12 @@ public class MinimumCostToConnectSticks_1167Test {
         assertEquals(30, appManager.connectSticks(sticks));
     }
 
+    @Test
+    public void TestConnectSticks_Equals33() {
+        int[] sticks = {1, 3, 11, 5};
+        System.out.println("Expecting " + 33);
+        System.out.println("Actual " + appManager.connectSticks(sticks));
+        assertEquals(33, appManager.connectSticks(sticks));
+    }
+
 }
